@@ -1,4 +1,4 @@
-[target.riscv32-unknown-none]
+[target.riscv32imac-unknown-none]
 runner = 'riscv32-unknown-elf-gdb'
 rustflags = [
   "-C", "link-arg=-Tlink.x",

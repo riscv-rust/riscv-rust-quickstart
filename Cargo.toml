@@ -4,4 +4,4 @@ version = "0.1.0"
 authors = ["David Craven <david@craven.ch>"]
 
 [dependencies.hifive]
-git = "https://github.com/dvc94ch/hifive"
+path = "../hifive"

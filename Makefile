@@ -1,4 +1,4 @@
-TARGET       := riscv32-unknown-none
+TARGET       := riscv32imac-unknown-none
 OPENOCD_CFG  := $(RISCV_RUST_TOOLCHAIN)/openocd.cfg
 
 build:
