@@ -17,26 +17,29 @@ enum State {
 static mut STATE: State = State::Stopped;
 
 fn init() {
-    // Initialize board
-    let p = hifive::init(115_200);
+    let p = Peripherals::take().unwrap();
+
+    // Initialize uart
+    let serial = Serial(&p.UART0);
+    serial.init(115_200.hz().invert(), &p.GPIO0);
 
     // Initialize leds
-    led::init(p.GPIO0);
+    led::init(&p.GPIO0);
 
     // Initialize stop btn
-    Pin18::init(p.GPIO0, PinConfig::InputPullup);
-    Pin18::enable_interrupt(p.GPIO0, PinInterrupt::Rise);
+    Pin18::init(&p.GPIO0, PinConfig::InputPullup);
+    Pin18::enable_interrupt(&p.GPIO0, PinInterrupt::Rise);
 
     // Initialize start btn
-    Pin19::init(p.GPIO0, PinConfig::InputPullup);
-    Pin19::enable_interrupt(p.GPIO0, PinInterrupt::Fall);
+    Pin19::init(&p.GPIO0, PinConfig::InputPullup);
+    Pin19::enable_interrupt(&p.GPIO0, PinInterrupt::Fall);
 
     // Initialize clint
-    let timer = Clint(p.CLINT);
+    let timer = Clint(&p.CLINT);
     timer.set_timeout(1.s());
 
     // Initialize plic
-    let plic = Plic(p.PLIC);
+    let plic = Plic(&p.PLIC);
     plic.enable(Interrupt::GPIO18);
     plic.enable(Interrupt::GPIO19);
 
@@ -51,23 +54,23 @@ fn main() {
 
 #[no_mangle]
 pub fn mtimer_trap_handler(p: &Peripherals) {
-    Clint(p.CLINT).restart();
-    Blue::toggle(p.GPIO0);
+    Clint(&p.CLINT).restart();
+    Blue::toggle(&p.GPIO0);
 }
 #[no_mangle]
 pub fn plic_trap_handler(p: &Peripherals, intr: &Interrupt) {
-    let serial = Serial(p.UART0);
+    let serial = Serial(&p.UART0);
     let mut stdout = Port(&serial);
 
     match *intr {
         Interrupt::GPIO18 => {
             unsafe { STATE = State::Stopped; }
-            Red::on(p.GPIO0);
+            Red::on(&p.GPIO0);
             writeln!(stdout, "Stopped").unwrap();
         },
         Interrupt::GPIO19 => {
             unsafe { STATE = State::Running; }
-            Red::off(p.GPIO0);
+            Red::off(&p.GPIO0);
             writeln!(stdout, "Started").unwrap();
         }
         _ => {},
