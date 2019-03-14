@@ -1,16 +1,15 @@
-TARGET       := riscv32imac-unknown-none
-OPENOCD_CFG  := $(RISCV_RUST_TOOLCHAIN)/openocd.cfg
+TARGET       := riscv32imac-unknown-none-elf
 
 build:
-	xargo build --target $(TARGET)
+	cargo build --target $(TARGET)
 
 run:
-	xargo run --target $(TARGET)
+	cargo run --target $(TARGET)
 
 clean:
-	xargo clean
+	cargo clean
 
 openocd:
-	openocd -f $(OPENOCD_CFG)
+	openocd -f openocd.cfg
 
 .PHONY: build run clean openocd
