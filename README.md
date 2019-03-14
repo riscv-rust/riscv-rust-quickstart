@@ -1,15 +1,15 @@
 # `riscv-rust-quickstart`
 
-> Template for getting rust working on hifive board
+> Template for getting rust working on HiFive1 board
 
 ## Getting started
-1. Build the toolchain [riscv-rust-toolchain](https://github.com/dvc94ch/riscv-rust-toolchain)
+1. Build `openocd` for RISC-V: [riscv-openocd](https://github.com/riscv/riscv-openocd)
 
-2. Update RISCV_RUST_TOOLCHAIN in env.sh
+2. Download [toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
 
-3. Setup environment
+3. Install `riscv32imac-unknown-none-elf` target
 ```sh
-source env.sh
+rustup target add riscv32imac-unknown-none-elf
 ```
 
 4. Build quickstart
