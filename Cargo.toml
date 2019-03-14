@@ -2,6 +2,10 @@
 name = "riscv-rust-quickstart"
 version = "0.1.0"
 authors = ["David Craven <david@craven.ch>"]
+edition = "2018"
 
-[dependencies.hifive]
-path = "../hifive"
+[dependencies]
+riscv = "0.5.0"
+riscv-rt = "0.5.0"
+hifive1 = { version = "0.4.0", features = ["board-hifive1"] }
+panic-halt = "0.2.0"
