@@ -1,9 +1,9 @@
 # `riscv-rust-quickstart`
 
-> Template for getting rust working on HiFive1 board
+> Template for getting rust working on HiFive1 Rev B board
 
 ## Getting started
-1. Build `openocd` for RISC-V: [riscv-openocd](https://github.com/riscv/riscv-openocd)
+1. Download [Segger JLink software & documentation pack for Linux](https://www.segger.com/downloads/jlink/)
 
 2. Download [toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
 
@@ -14,22 +14,17 @@ rustup target add riscv32imac-unknown-none-elf
 
 4. Build quickstart
 ```sh
-make build
+cargo build
 ```
 
-5. Start openocd
+5. Start J-Link gdb server
 ```sh
-make openocd
+JLinkGDBServer -device FE310 -if JTAG -speed 4000
 ```
 
-6. Start gdb
+6. Upload the firmware
 ```sh
-make run
-```
-
-7. Upload with gdb
-```sh
-upload
+cargo run
 ```
 
 
