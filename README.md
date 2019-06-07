@@ -1,35 +1,43 @@
 # `riscv-rust-quickstart`
 
-> Template for getting rust working on HiFive1 board
+> A template for building applications for HiFive1 boards
+
+This project is developed and maintained by the [RISC-V team][team].
 
 ## Getting started
-1. Build `openocd` for RISC-V: [riscv-openocd](https://github.com/riscv/riscv-openocd)
 
-2. Download [toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
+1. Download [toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
+
+2. Download programmer software
+  * HiFive1 Rev B: [Segger JLink software & documentation pack for Linux](https://www.segger.com/downloads/jlink/)
+  * HiFive1: [OpenOCD from SiFive](https://static.dev.sifive.com/dev-tools/riscv-openocd-0.10.0-2019.02.0-x86_64-linux-ubuntu14.tar.gz)
 
 3. Install `riscv32imac-unknown-none-elf` target
 ```sh
 rustup target add riscv32imac-unknown-none-elf
 ```
 
-4. Build quickstart
+4. If you have an old HiFive1 board, fix `Cargo.toml`: replace `board-hifive1-revb` with `board-hifive1`
+
+5. Start programmer software
+  * HiFive1 Rev B:
 ```sh
-make build
+/path/to/JLinkGDBServer -device FE310 -if JTAG -speed 4000 -port 3333
+```
+  * HiFive1
+```sh
+/path/to/openocd -f openocd.cfg
 ```
 
-5. Start openocd
+6. Connect your board and open a serial console (if you need serial output)
 ```sh
-make openocd
+screen /dev/ttyACM0 115200  # /dev/ttyUSB1 for HiFive1
 ```
 
-6. Start gdb
+7. Build and run the example
 ```sh
-make run
-```
-
-7. Upload with gdb
-```sh
-upload
+cargo build --example hello_world
+cargo run --example hello_world
 ```
 
 
@@ -47,3 +55,5 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
 OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
 TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
+
+[team]: https://github.com/rust-embedded/wg#the-riscv-team
