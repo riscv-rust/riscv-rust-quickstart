@@ -14,7 +14,7 @@ use hifive1::hal::serial::Serial;
 use hifive1::hal::e310x::Peripherals;
 use hifive1::hal::stdout::*;
 use hifive1::Led;
-use riscv::register::mie;
+use riscv::register::{mie, mip};
 
 // switches led according to supplied status returning the new state back
 fn toggle_led(led: &mut Led, status: bool) -> bool {
@@ -85,7 +85,16 @@ fn main() -> ! {
             // in our case when internal timer mtime value >= mtimecmp value
             // after which empty handler gets called and we go into the
             // next iteration of this loop
-            riscv::asm::wfi();
+            loop {
+                riscv::asm::wfi();
+
+                // check if we got the right interrupt cause, otherwise just loop back to wfi
+                if mip::read().mtimer() {
+                    break;
+                } else {
+                    writeln!(stdout, "Unexpected interrupt cause").unwrap();
+                }
+            }
         }
     }
 }
