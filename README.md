@@ -1,6 +1,6 @@
 # `riscv-rust-quickstart`
 
-> A template for building applications for HiFive1 boards
+> A template for building Rust applications for HiFive1 boards
 
 This project is developed and maintained by the [RISC-V team][team].
 
