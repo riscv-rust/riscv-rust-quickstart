@@ -19,12 +19,12 @@ rustup target add riscv32imac-unknown-none-elf
 
 4. If you have an old HiFive1 board, fix `Cargo.toml`: replace `board-hifive1-revb` with `board-hifive1`
 
-5. Start programmer software
+5. Run the programmer software
   * HiFive1 Rev B:
 ```sh
 /path/to/JLinkGDBServer -device FE310 -if JTAG -speed 4000 -port 3333
 ```
-  * HiFive1
+  * HiFive1:
 ```sh
 /path/to/openocd -f openocd.cfg
 ```
