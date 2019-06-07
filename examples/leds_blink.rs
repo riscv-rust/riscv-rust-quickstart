@@ -91,8 +91,6 @@ fn main() -> ! {
                 // check if we got the right interrupt cause, otherwise just loop back to wfi
                 if mip::read().mtimer() {
                     break;
-                } else {
-                    writeln!(stdout, "Unexpected interrupt cause").unwrap();
                 }
             }
         }
