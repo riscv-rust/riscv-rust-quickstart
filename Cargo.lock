@@ -19,7 +19,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bare-metal 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "riscv 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "riscv 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "riscv-rt 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "vcell 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -32,7 +32,7 @@ dependencies = [
  "e310x 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "embedded-hal 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "nb 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "riscv 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "riscv 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -107,7 +107,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "riscv"
-version = "0.5.0"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bare-metal 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -120,7 +120,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "riscv 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "riscv 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "riscv-rt-macros 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -141,6 +141,7 @@ version = "0.1.0"
 dependencies = [
  "hifive1 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "panic-halt 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "riscv 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "riscv-rt 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -205,7 +206,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum rand 0.5.6 (registry+https://github.com/rust-lang/crates.io-index)" = "c618c47cd3ebd209790115ab837de41425723956ad3ce2e6a7f09890947cacb9"
 "checksum rand_core 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "7a6fdeb83b075e8266dcc8762c22776f6877a63111121f5f8c7411e5be7eed4b"
 "checksum rand_core 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d0e7a549d590831370895ab7ba4ea0c1b6b011d106b5ff2da6eee112615e6dc0"
-"checksum riscv 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "41bf5edfc54f0a08708458c4600dba51d040705032d13301b86207a135b160db"
+"checksum riscv 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)" = "00f3ec73803f144a6474819070dfcf0b0d1662e1bd8845956850ee8f8cfbc69b"
 "checksum riscv-rt 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "af8c51c09a5445950a53431d3f8ca9d90ba4062cd86b5407c3e16d8c2558c17d"
 "checksum riscv-rt-macros 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "e9ba967e1f2902cc37cc4722f7ef4dd5e08cec430c97586424d6f679eb51b695"
 "checksum rustc_version 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "138e3e0acb6c9fb258b19b67cb8abd63c00679d2851805ea151465464fe9030a"
