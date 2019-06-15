@@ -7,7 +7,7 @@ use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::serial::Serial;
 use hifive1::hal::e310x::Peripherals;
-use hifive1::hal::stdout::*;
+use hifive1::hal::stdout::Stdout;
 
 #[entry]
 fn main() -> ! {

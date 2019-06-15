@@ -11,7 +11,6 @@
 extern crate panic_halt;
 
 use riscv_rt::entry;
-use embedded_hal::digital::v2::*;
 use hifive1::hal::prelude::*;
 use hifive1::hal::e310x::Peripherals;
 use riscv::register::{mie, mip};
