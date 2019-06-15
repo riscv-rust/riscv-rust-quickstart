@@ -6,7 +6,7 @@ extern crate panic_halt;
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::e310x::Peripherals;
-use hifive1::hal::spi::{Spi, Mode, Polarity, Phase};
+use hifive1::hal::spi::{Spi, MODE_0};
 
 #[entry]
 fn main() -> ! {
@@ -24,11 +24,7 @@ fn main() -> ! {
 
     // Configure SPI
     let pins = (mosi, miso, sck, cs);
-    let mode0 = Mode {
-        polarity: Polarity::IdleLow,
-        phase: Phase::CaptureOnFirstTransition,
-    };
-    let mut spi = Spi::spi1(p.QSPI1, pins, mode0, 1_000_000.hz(), clocks);
+    let mut spi = Spi::spi1(p.QSPI1, pins, MODE_0, 1_000_000.hz(), clocks);
 
     let mut buf = [0x41, 0x42, 0xab, 0xcd];
     let _ = spi.transfer(&mut buf);
