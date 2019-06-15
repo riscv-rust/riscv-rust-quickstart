@@ -10,10 +10,9 @@ extern crate panic_halt;
 
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
-use hifive1::hal::serial::Serial;
 use hifive1::hal::e310x::Peripherals;
-use hifive1::hal::stdout::Stdout;
 use hifive1::Led;
+use hifive1::sprintln;
 use riscv::register::{mie, mip};
 
 // switches led according to supplied status returning the new state back
@@ -34,13 +33,8 @@ fn main() -> ! {
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
-    // Configure UART
-    let tx = gpio.pin17.into_iof0();
-    let rx = gpio.pin16.into_iof0();
-    let serial = Serial::new(p.UART0, (tx, rx), 115_200.bps(), clocks);
-    let (mut tx, _) = serial.split();
-
-    let mut stdout = Stdout(&mut tx);
+    // Configure UART for stdout
+    hifive1::stdout::configure(p.UART0, gpio.pin17, gpio.pin16, 115_200.bps(), clocks);
 
     // get all 3 led pins in a tuple (each pin is it's own type here)
     let mut tleds = hifive1::rgb(gpio.pin22, gpio.pin19, gpio.pin21);
@@ -59,7 +53,7 @@ fn main() -> ! {
         mie::set_mtimer();
     }
 
-    writeln!(stdout, "Starting blink loop").unwrap();
+    sprintln!("Starting blink loop");
 
     let period = clocks.lfclk().0 as u64; // 1s
     loop {
