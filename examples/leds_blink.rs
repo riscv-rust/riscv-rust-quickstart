@@ -42,7 +42,7 @@ fn main() -> ! {
         &mut gpio.iof_sel,
         &mut gpio.iof_en
     );
-    let serial = Serial::uart0(p.UART0, (tx, rx), 115_200.bps(), clocks);
+    let serial = Serial::new(p.UART0, (tx, rx), 115_200.bps(), clocks);
     let (mut tx, _) = serial.split();
 
     let mut stdout = Stdout(&mut tx);
