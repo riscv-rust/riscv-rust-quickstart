@@ -28,7 +28,6 @@ fn toggle_led(led: &mut Led, status: bool) -> bool {
 
 #[entry]
 fn main() -> ! {
-    const PERIOD: u64 = 32000; // ~1s
     let p = Peripherals::take().unwrap();
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
@@ -68,6 +67,7 @@ fn main() -> ! {
 
     writeln!(stdout, "Starting blink loop").unwrap();
 
+    let period = clocks.lfclk().0 as u64; // 1s
     loop {
         // toggle led
         led_status[current_led] = toggle_led(ileds[current_led], led_status[current_led]);
@@ -78,7 +78,7 @@ fn main() -> ! {
         }
 
         // set next wakeup time each iteration
-        clint.mtimecmp.set_mtimecmp(clint.mtime.mtime() + PERIOD);
+        clint.mtimecmp.set_mtimecmp(clint.mtime.mtime() + period);
 
         unsafe {
             // Wait For Interrupt will put CPU to sleep until an interrupt hits
