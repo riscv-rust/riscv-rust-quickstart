@@ -22,11 +22,10 @@ fn main() -> ! {
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
     // Get GPIO
-    let mut gpio = p.GPIO0.split();
+    let gpio = p.GPIO0.split();
 
     // GPIO PIN1 -> PIN9 physical on board (both hifive1 and hifive1-revB)
-    let mut eled = gpio.pin1.into_output(&mut gpio.output_en, &mut gpio.drive,
-                                         &mut gpio.out_xor, &mut gpio.iof_en);
+    let mut eled = gpio.pin1.into_output();
 
     // get the local interrupts struct
     let mut clint = p.CLINT.split();

@@ -29,27 +29,21 @@ fn toggle_led(led: &mut Led, status: bool) -> bool {
 #[entry]
 fn main() -> ! {
     let p = Peripherals::take().unwrap();
+    let gpio = p.GPIO0.split();
+
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
     // Configure UART
-    let mut gpio = p.GPIO0.split();
-    let (tx, rx) = hifive1::tx_rx(
-        gpio.pin17,
-        gpio.pin16,
-        &mut gpio.out_xor,
-        &mut gpio.iof_sel,
-        &mut gpio.iof_en
-    );
+    let tx = gpio.pin17.into_iof0();
+    let rx = gpio.pin16.into_iof0();
     let serial = Serial::new(p.UART0, (tx, rx), 115_200.bps(), clocks);
     let (mut tx, _) = serial.split();
 
     let mut stdout = Stdout(&mut tx);
 
     // get all 3 led pins in a tuple (each pin is it's own type here)
-    let mut tleds = hifive1::rgb(gpio.pin22, gpio.pin19, gpio.pin21,
-                                 &mut gpio.output_en, &mut gpio.drive,
-                                 &mut gpio.out_xor, &mut gpio.iof_en);
+    let mut tleds = hifive1::rgb(gpio.pin22, gpio.pin19, gpio.pin21);
 
     // get leds as the Led trait in an array so we can index them
     let ileds: [&mut Led; 3] = [&mut tleds.0, &mut tleds.1, &mut tleds.2];

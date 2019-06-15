@@ -14,27 +14,22 @@ use hifive1::hal::stdout::Stdout;
 #[entry]
 fn main() -> ! {
     let p = Peripherals::take().unwrap();
-    let mut gpio = p.GPIO0.split();
+    let gpio = p.GPIO0.split();
 
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 100.mhz().into());
 
     // Configure UART
-    let (tx, rx) = hifive1::tx_rx(
-        gpio.pin17,
-        gpio.pin16,
-        &mut gpio.out_xor,
-        &mut gpio.iof_sel,
-        &mut gpio.iof_en
-    );
+    let tx = gpio.pin17.into_iof0();
+    let rx = gpio.pin16.into_iof0();
     let serial = Serial::new(p.UART0, (tx, rx), 115_200.bps(), clocks);
     let (mut tx, _) = serial.split();
 
     let mut stdout = Stdout(&mut tx);
 
     // Configure I2C
-    let sda = gpio.pin12.into_iof0(&mut gpio.out_xor, &mut gpio.iof_sel, &mut gpio.iof_en);
-    let scl = gpio.pin13.into_iof0(&mut gpio.out_xor, &mut gpio.iof_sel, &mut gpio.iof_en);
+    let sda = gpio.pin12.into_iof0();
+    let scl = gpio.pin13.into_iof0();
     let mut i2c = I2c::new(p.I2C0, sda, scl, Speed::Normal, clocks);
 
     // Read calibration data from BME280 sensor (registers 0xE1..0xF0)
