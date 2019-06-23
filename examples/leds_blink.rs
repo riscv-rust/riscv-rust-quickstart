@@ -11,9 +11,9 @@ extern crate panic_halt;
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::e310x::Peripherals;
+use hifive1::hal::delay::Sleep;
 use hifive1::Led;
 use hifive1::sprintln;
-use riscv::register::{mie, mip};
 
 // switches led according to supplied status returning the new state back
 fn toggle_led(led: &mut Led, status: bool) -> bool {
@@ -43,19 +43,17 @@ fn main() -> ! {
     let ileds: [&mut Led; 3] = [&mut tleds.0, &mut tleds.1, &mut tleds.2];
 
     // get the local interrupts struct
-    let mut clint = p.CLINT.split();
+    let clint = p.CLINT.split();
 
     let mut led_status = [true, true, true]; // start on red
     let mut current_led = 0; // start on red
 
-    // enable timer
-    unsafe {
-        mie::set_mtimer();
-    }
+    // get the sleep struct
+    let mut sleep = Sleep::new(clint.mtimecmp, clocks);
 
     sprintln!("Starting blink loop");
 
-    let period = clocks.lfclk().0 as u64; // 1s
+    const PERIOD: u32 = 1000; // 1s
     loop {
         // toggle led
         led_status[current_led] = toggle_led(ileds[current_led], led_status[current_led]);
@@ -65,22 +63,7 @@ fn main() -> ! {
             current_led = (current_led + 1) % 3
         }
 
-        // set next wakeup time each iteration
-        clint.mtimecmp.set_mtimecmp(clint.mtime.mtime() + period);
-
-        unsafe {
-            // Wait For Interrupt will put CPU to sleep until an interrupt hits
-            // in our case when internal timer mtime value >= mtimecmp value
-            // after which empty handler gets called and we go into the
-            // next iteration of this loop
-            loop {
-                riscv::asm::wfi();
-
-                // check if we got the right interrupt cause, otherwise just loop back to wfi
-                if mip::read().mtimer() {
-                    break;
-                }
-            }
-        }
+        // sleep for 1
+        sleep.delay_ms(PERIOD);
     }
 }

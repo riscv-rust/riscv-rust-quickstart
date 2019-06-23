@@ -13,7 +13,7 @@ extern crate panic_halt;
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::e310x::Peripherals;
-use riscv::register::{mie, mip};
+use hifive1::hal::delay::Sleep;
 
 #[entry]
 fn main() -> ! {
@@ -28,33 +28,16 @@ fn main() -> ! {
     let mut eled = gpio.pin1.into_output();
 
     // get the local interrupts struct
-    let mut clint = p.CLINT.split();
+    let clint = p.CLINT.split();
 
-    // enable timer
-    unsafe {
-        mie::set_mtimer();
-    }
+    // get the sleep struct
+    let mut sleep = Sleep::new(clint.mtimecmp, clocks);
 
-    let period = clocks.lfclk().0 as u64; // 1s
+    const PERIOD: u32 = 1000; // 1s
     loop {
         eled.toggle().unwrap();
-
-        // set next wakeup time each iteration
-        clint.mtimecmp.set_mtimecmp(clint.mtime.mtime() + period);
-
-        unsafe {
-            // Wait For Interrupt will put CPU to sleep until an interrupt hits
-            // in our case when internal timer mtime value >= mtimecmp value
-            // after which empty handler gets called and we go into the
-            // next iteration of this loop
-            loop {
-                riscv::asm::wfi();
-
-                // check if we got the right interrupt cause, otherwise just loop back to wfi
-                if mip::read().mtimer() {
-                    break;
-                }
-            }
-        }
+        
+        // sleep for 1s
+        sleep.delay_ms(PERIOD);
     }
 }
