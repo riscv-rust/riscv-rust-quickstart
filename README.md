@@ -26,7 +26,7 @@ rustup target add riscv32imac-unknown-none-elf
 ```
   * HiFive1:
 ```sh
-/path/to/openocd -f openocd.cfg
+/path/to/openocd -f board/sifive-hifive1.cfg
 ```
 
 6. Connect your board and open a serial console (if you need serial output)
