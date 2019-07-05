@@ -12,23 +12,22 @@ extern crate panic_halt;
 
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
-use hifive1::hal::e310x::Peripherals;
 use hifive1::hal::delay::Sleep;
+use hifive1::BoardResources;
 
 #[entry]
 fn main() -> ! {
-    let p = Peripherals::take().unwrap();
+    let board = BoardResources::take().unwrap();
+    let p = board.peripherals;
+
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
-    // Get GPIO
-    let gpio = p.GPIO0.split();
-
-    // GPIO PIN1 -> PIN9 physical on board (both hifive1 and hifive1-revB)
-    let mut eled = gpio.pin1.into_output();
+    // GPIO PIN1 -> DIG9 physical on board (both hifive1 and hifive1-revB)
+    let mut eled = board.pins.dig9.into_output();
 
     // get the local interrupts struct
-    let clint = p.CLINT.split();
+    let clint = board.core_peripherals.clint;
 
     // get the sleep struct
     let mut sleep = Sleep::new(clint.mtimecmp, clocks);

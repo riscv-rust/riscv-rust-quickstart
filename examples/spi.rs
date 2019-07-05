@@ -5,22 +5,22 @@ extern crate panic_halt;
 
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
-use hifive1::hal::e310x::Peripherals;
 use hifive1::hal::spi::{Spi, MODE_0};
+use hifive1::BoardResources;
 
 #[entry]
 fn main() -> ! {
-    let p = Peripherals::take().unwrap();
-    let gpio = p.GPIO0.split();
+    let board = BoardResources::take().unwrap();
+    let p = board.peripherals;
 
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
     // Configure SPI pins
-    let mosi = gpio.pin3.into_iof0();
-    let miso = gpio.pin4.into_iof0();
-    let sck = gpio.pin5.into_iof0();
-    let cs = gpio.pin2.into_iof0();
+    let mosi = board.pins.dig11.into_iof0();
+    let miso = board.pins.dig12.into_iof0();
+    let sck = board.pins.dig13.into_iof0();
+    let cs = board.pins.dig15.into_iof0();
 
     // Configure SPI
     let pins = (mosi, miso, sck, cs);
