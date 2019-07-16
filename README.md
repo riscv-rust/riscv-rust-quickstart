@@ -4,22 +4,48 @@
 
 This project is developed and maintained by the [RISC-V team][team].
 
-## Getting started
+## Dependencies
 
-1. Download [toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
+To build embedded programs using this template you'll need:
 
-2. Download programmer software
-  * HiFive1 Rev B: [Segger JLink software & documentation pack for Linux](https://www.segger.com/downloads/jlink/)
-  * HiFive1: [OpenOCD from SiFive](https://static.dev.sifive.com/dev-tools/riscv-openocd-0.10.0-2019.02.0-x86_64-linux-ubuntu14.tar.gz)
+- Rust 1.36 or a newer toolchain. e.g. `rustup default stable`
 
-3. Install `riscv32imac-unknown-none-elf` target
-```sh
-rustup target add riscv32imac-unknown-none-elf
+- The `cargo generate` subcommand. [Installation
+  instructions](https://github.com/ashleygwilliams/cargo-generate#installation).
+
+- `rust-std` components (pre-compiled `core` crate) for the RISC-V target. Run:
+
+``` console
+$ rustup target add riscv32imac-unknown-none-elf
 ```
 
-4. If you have an old HiFive1 board, fix `Cargo.toml`: replace `board-hifive1-revb` with `board-hifive1`
+- [RISC-V toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
 
-5. Run the programmer software
+- Programmer software
+  * HiFive1 Rev B: [Segger JLink software & documentation pack for Linux](https://www.segger.com/downloads/jlink/)
+  * HiFive1: [OpenOCD from SiFive](https://static.dev.sifive.com/dev-tools/riscv-openocd-0.10.0-2019.02.0-x86_64-linux-ubuntu14.tar.gz) 
+
+## Using this template
+
+**NOTE**: This is the very short version that only covers building programs. For
+the long version, which additionally covers flashing, running and debugging
+programs, check [the embedded Rust book](https://rust-embedded.github.io/book).
+
+1. Instantiate the template.
+
+``` console
+$ cargo generate --git https://github.com/riscv-rust/riscv-rust-quickstart
+ Project Name: app
+ Creating project called `app`...
+ Done! New project created /tmp/app
+
+$ cd app
+```
+
+2. If you have an old HiFive1 board, edit `Cargo.toml`:
+replace `board-hifive1-revb` with `board-hifive1`.
+
+3. Run the programmer software.
   * HiFive1 Rev B:
 ```sh
 /path/to/JLinkGDBServer -device FE310 -if JTAG -speed 4000 -port 3333
@@ -29,15 +55,20 @@ rustup target add riscv32imac-unknown-none-elf
 /path/to/openocd -f board/sifive-hifive1.cfg
 ```
 
-6. Connect your board and open a serial console (if you need serial output)
-```sh
-screen /dev/ttyACM0 115200  # /dev/ttyUSB1 for HiFive1
+4. Build the template application or one of the examples.
+
+``` console
+$ cargo build
+or
+$ cargo build --example leds_blink
 ```
 
-7. Build and run the example
-```sh
-cargo build --example hello_world
-cargo run --example hello_world
+5. Run the template application or one of the examples.
+
+``` console
+$ cargo run
+or
+$ cargo run --example leds_blink
 ```
 
 
