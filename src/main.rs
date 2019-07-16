@@ -5,12 +5,12 @@ extern crate panic_halt;
 
 use riscv_rt::entry;
 use hifive1::hal::prelude::*;
-use hifive1::BoardResources;
+use hifive1::hal::DeviceResources;
 
 #[entry]
 fn main() -> ! {
-    let board = BoardResources::take().unwrap();
-    let p = board.peripherals;
+    let dr = DeviceResources::take().unwrap();
+    let p = dr.peripherals;
 
     // Configure clocks
     let _clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());

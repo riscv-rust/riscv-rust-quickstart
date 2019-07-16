@@ -9,7 +9,8 @@ use hifive1::hal::spi::{Spi, MODE_0, SpiX};
 use hifive1::hal::gpio::{gpio0::{Pin9, Pin10}, Output, Regular, Invert, Input, Floating};
 use hifive1::hal::delay::Delay;
 use hifive1::hal::clock::Clocks;
-use hifive1::{sprintln, BoardResources};
+use hifive1::hal::DeviceResources;
+use hifive1::{sprintln, pin};
 use core::panic::PanicInfo;
 use embedded_hal::blocking::delay::DelayUs;
 use embedded_hal::blocking::spi::WriteIter;
@@ -123,28 +124,29 @@ impl DelayUs<u32> for FastDelay {
 
 #[entry]
 fn main() -> ! {
-    let board = BoardResources::take().unwrap();
-    let p = board.peripherals;
+    let dr = DeviceResources::take().unwrap();
+    let p = dr.peripherals;
+    let gpio = dr.pins;
 
     // Configure clocks
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 50.mhz().into());
 
     // Configure UART for stdout
-    hifive1::stdout::configure(p.UART0, board.pins.dig1, board.pins.dig0, 115_200.bps(), clocks);
+    hifive1::stdout::configure(p.UART0, pin!(gpio, uart0_tx), pin!(gpio, uart0_rx), 115_200.bps(), clocks);
 
     // Configure SPI pins
-    let mosi = board.pins.dig11.into_iof0();
-    let miso = board.pins.dig12.into_iof0();
-    let sck = board.pins.dig13.into_iof0();
+    let mosi = pin!(gpio, spi0_mosi).into_iof0();
+    let miso = pin!(gpio, spi0_miso).into_iof0();
+    let sck = pin!(gpio, spi0_sck).into_iof0();
     //let cs = board.pins.dig15.into_iof0();
-    let mut cs = board.pins.dig15.into_inverted_output();
+    let mut cs = pin!(gpio, spi0_ss2).into_inverted_output();
     cs.set_low().unwrap();
 
     // Configure SPI
     let pins = (mosi, miso, sck);
     let spi = Spi::new(p.QSPI1, pins, MODE_0, 100_000.hz(), clocks);
 
-    let handshake = board.pins.dig16.into_floating_input();
+    let handshake = pin!(gpio, spi0_ss3).into_floating_input();
     let mut wifi = EspWiFi {
         spi,
         cs,
