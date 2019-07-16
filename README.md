@@ -73,7 +73,7 @@ $ cargo run --example leds_blink
 
 
 ## License
-Copyright 2017 David Craven
+Copyright 2017-2019 [RISC-V team][team]
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted, provided that the above copyright notice
