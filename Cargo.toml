@@ -6,10 +6,10 @@ edition = "2018"
 
 [dependencies]
 embedded-hal = "0.2.3"
-hifive1 = { version = "0.7.0", features = ["board-hifive1-revb"] }
+hifive1 = { version = "0.8.0", features = ["board-hifive1-revb"] }
 panic-halt = "0.2.0"
-riscv = "0.5.2"
-riscv-rt = "0.5.0"
+riscv = "0.5.3"
+riscv-rt = "0.6.0"
 
 [profile.release]
 codegen-units = 1 # better optimizations
