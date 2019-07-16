@@ -1,8 +1,10 @@
 [package]
-name = "riscv-rust-quickstart"
-version = "0.1.0"
-authors = ["David Craven <david@craven.ch>"]
+name = "{{project-name}}"
+version = "0.0.0"
+authors = ["{{authors}}"]
 edition = "2018"
+license = "ISC"
+readme = "README.md"
 
 [dependencies]
 embedded-hal = "0.2.3"
@@ -10,6 +12,12 @@ hifive1 = { version = "0.8.0", features = ["board-hifive1-revb"] }
 panic-halt = "0.2.0"
 riscv = "0.5.3"
 riscv-rt = "0.6.0"
+
+# this lets you use `cargo fix`!
+[[bin]]
+name = "{{project-name}}"
+test = false
+bench = false
 
 [profile.release]
 codegen-units = 1 # better optimizations
