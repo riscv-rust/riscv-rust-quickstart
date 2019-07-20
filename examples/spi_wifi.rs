@@ -139,7 +139,8 @@ fn main() -> ! {
     let miso = pin!(gpio, spi0_miso).into_iof0();
     let sck = pin!(gpio, spi0_sck).into_iof0();
     //let cs = board.pins.dig15.into_iof0();
-    let mut cs = pin!(gpio, spi0_ss2).into_inverted_output();
+    let cs = pin!(gpio, spi0_ss2).into_floating_input();
+    let mut cs = cs.into_inverted_output();
     cs.set_low().unwrap();
 
     // Configure SPI
