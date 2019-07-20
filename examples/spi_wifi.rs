@@ -134,7 +134,7 @@ fn main() -> ! {
     let pins = (mosi, miso, sck, cs);
     let spi = Spi::new(p.QSPI1, pins, MODE_0, 100_000.hz(), clocks);
 
-    let handshake = pin!(gpio, spi0_ss3).into_floating_input();
+    let handshake = gpio.pin10.into_floating_input();
     let mut wifi = EspWiFi {
         spi,
         handshake,
