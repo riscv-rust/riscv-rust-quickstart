@@ -35,37 +35,27 @@ enum EspError {
 
 struct EspWiFi<SPI, PINS> {
     spi: Spi<SPI, PINS>,
-    cs: Pin9<Output<Regular<Invert>>>,
     handshake: Pin10<Input<Floating>>,
     delay: FastDelay,
 }
 
 impl<SPI: SpiX, PINS> EspWiFi<SPI, PINS> {
-    fn set_cs(&mut self, active: bool) {
-        self.delay.delay_us(18u32);
-        match active {
-            true => self.cs.set_high().unwrap(),
-            false => self.cs.set_low().unwrap(),
-        }
-        self.delay.delay_us(18u32);
-    }
-
     fn send_bytes(&mut self, bytes: &[u8]) {
-        self.set_cs(true);
+        self.delay.delay_us(18u32);
         self.spi.write(bytes).unwrap();
-        self.set_cs(false);
+        self.delay.delay_us(5000u32);
     }
 
     fn transfer(&mut self, buffer: &mut [u8]) {
-        self.set_cs(true);
+        self.delay.delay_us(18u32);
         self.spi.transfer(buffer).unwrap();
-        self.set_cs(false);
+        self.delay.delay_us(5000u32);
     }
 
     fn discard(&mut self, size: usize) {
-        self.set_cs(true);
+        self.delay.delay_us(18u32);
         self.spi.write_iter((0..size).map(|_| 0x00)).unwrap();
-        self.set_cs(false);
+        self.delay.delay_us(5000u32);
     }
 
     pub fn send(&mut self, s: &str) {
@@ -138,19 +128,15 @@ fn main() -> ! {
     let mosi = pin!(gpio, spi0_mosi).into_iof0();
     let miso = pin!(gpio, spi0_miso).into_iof0();
     let sck = pin!(gpio, spi0_sck).into_iof0();
-    //let cs = board.pins.dig15.into_iof0();
-    let cs = pin!(gpio, spi0_ss2).into_floating_input();
-    let mut cs = cs.into_inverted_output();
-    cs.set_low().unwrap();
+    let cs = pin!(gpio, spi0_ss2).into_iof0();
 
     // Configure SPI
-    let pins = (mosi, miso, sck);
+    let pins = (mosi, miso, sck, cs);
     let spi = Spi::new(p.QSPI1, pins, MODE_0, 100_000.hz(), clocks);
 
     let handshake = pin!(gpio, spi0_ss3).into_floating_input();
     let mut wifi = EspWiFi {
         spi,
-        cs,
         handshake,
         delay: FastDelay::new(clocks),
     };
@@ -162,6 +148,7 @@ fn main() -> ! {
     let mut buffer = [0u8; 256];
 
     wifi.send("AT+CWMODE=0\r\n");
+    Delay.delay_ms(20u32);
     sprintln!("resp: {:?}", wifi.recv(&mut buffer));
 
     loop {}
