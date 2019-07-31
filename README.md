@@ -20,6 +20,8 @@ $ rustup target add riscv32imac-unknown-none-elf
 ```
 
 - [RISC-V toolchain for SiFive boards](https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14.tar.gz)
+  * Extract this package.
+  * See "Set up `gdb`", below.
 
 - Programmer software
   * HiFive1 Rev B: [Segger JLink software & documentation pack for Linux](https://www.segger.com/downloads/jlink/)
@@ -45,7 +47,17 @@ $ cd app
 2. If you have an old HiFive1 board, edit `Cargo.toml`:
 replace `board-hifive1-revb` with `board-hifive1`.
 
-3. Run the programmer software.
+3. Set up `gdb`:
+  * Open `.cargo/config`
+  * Edit the line that reads `runner = "riscv32imac-unknown-elf-gdb -q -x gdb_init"` to read:
+  ```
+  runner = "/path/to/riscv64-unknown-elf-gcc-8.1.0-2019.01.0-x86_64-linux-ubuntu14/bin/riscv64-unknown-elf-gdb -q -x gdb_init"
+  ```
+  or ensure that `riscv64-unknown-elf-gdb` is on your `$PATH`.
+  (`riscv64-unknown-elf-gdb` was downloaded and extracted in the `RISC-V toolchain for SiFive
+  boards` step, above.)
+
+4. Run the programmer software.
   * HiFive1 Rev B:
 ```sh
 /path/to/JLinkGDBServer -device FE310 -if JTAG -speed 4000 -port 3333
@@ -55,7 +67,7 @@ replace `board-hifive1-revb` with `board-hifive1`.
 /path/to/openocd -f board/sifive-hifive1.cfg
 ```
 
-4. Build the template application or one of the examples.
+5. Build the template application or one of the examples.
 
 ``` console
 $ cargo build
