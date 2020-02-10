@@ -1,7 +1,7 @@
 [package]
-name = "{{project-name}}"
+name = "riscv-rust-quickstart"
 version = "0.0.0"
-authors = ["{{authors}}"]
+authors = ["disasm"]
 edition = "2018"
 license = "ISC"
 readme = "README.md"
@@ -12,10 +12,11 @@ hifive1 = { version = "0.8.0", features = ["board-hifive1-revb"] }
 panic-halt = "0.2.0"
 riscv = "0.5.3"
 riscv-rt = "0.6.0"
+bare-metal = "0.2"
 
 # this lets you use `cargo fix`!
 [[bin]]
-name = "{{project-name}}"
+name = "riscv-rust-quickstart"
 test = false
 bench = false
 
