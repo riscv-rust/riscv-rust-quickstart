@@ -32,11 +32,11 @@ the long version, which additionally covers flashing, running and debugging
 programs, check [the embedded Rust book](https://rust-embedded.github.io/book).
 
 
-**NOTE**: If you don't have cargo generate install use,
+**NOTE**: If you don't have `cargo generate` installed, use
 
     cargo install cargo-generate
 
-To install it. 
+to install it. 
 
 
 1. Instantiate the template.
