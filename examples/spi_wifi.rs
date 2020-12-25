@@ -119,7 +119,7 @@ fn main() -> ! {
     let gpio = dr.pins;
 
     // Configure clocks
-    let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 50.mhz().into());
+    let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
     // Configure UART for stdout
     hifive1::stdout::configure(p.UART0, pin!(gpio, uart0_tx), pin!(gpio, uart0_rx), 115_200.bps(), clocks);
