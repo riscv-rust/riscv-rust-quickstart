@@ -3,9 +3,9 @@
 
 extern crate panic_halt;
 
-use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::DeviceResources;
+use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {

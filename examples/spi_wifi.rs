@@ -3,17 +3,17 @@
 
 //extern crate panic_halt;
 
-use riscv_rt::entry;
-use hifive1::hal::prelude::*;
-use hifive1::hal::spi::{Spi, MODE_0, SpiX};
-use hifive1::hal::gpio::{gpio0::{Pin9, Pin10}, Output, Regular, Invert, Input, Floating};
-use hifive1::hal::delay::Delay;
-use hifive1::hal::clock::Clocks;
-use hifive1::hal::DeviceResources;
-use hifive1::{sprintln, pin};
 use core::panic::PanicInfo;
 use embedded_hal::blocking::delay::DelayUs;
 use embedded_hal::blocking::spi::WriteIter;
+use hifive1::hal::clock::Clocks;
+use hifive1::hal::delay::Delay;
+use hifive1::hal::gpio::{gpio0::Pin10, Floating, Input};
+use hifive1::hal::prelude::*;
+use hifive1::hal::spi::{Spi, SpiX, MODE_0};
+use hifive1::hal::DeviceResources;
+use hifive1::{pin, sprintln};
+use riscv_rt::entry;
 
 #[inline(never)]
 #[panic_handler]
@@ -30,7 +30,7 @@ fn panic(info: &PanicInfo) -> ! {
 enum EspError {
     ProtocolError,
     BufferOverflow,
-    WouldBlock
+    WouldBlock,
 }
 
 struct EspWiFi<SPI, PINS> {
@@ -122,7 +122,13 @@ fn main() -> ! {
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
     // Configure UART for stdout
-    hifive1::stdout::configure(p.UART0, pin!(gpio, uart0_tx), pin!(gpio, uart0_rx), 115_200.bps(), clocks);
+    hifive1::stdout::configure(
+        p.UART0,
+        pin!(gpio, uart0_tx),
+        pin!(gpio, uart0_rx),
+        115_200.bps(),
+        clocks,
+    );
 
     // Configure SPI pins
     let mosi = pin!(gpio, spi0_mosi).into_iof0();

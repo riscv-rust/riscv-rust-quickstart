@@ -3,10 +3,10 @@
 
 extern crate panic_halt;
 
-use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::DeviceResources;
-use hifive1::{sprintln, pin};
+use hifive1::{pin, sprintln};
+use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {
@@ -18,12 +18,22 @@ fn main() -> ! {
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 320.mhz().into());
 
     // Configure UART for stdout
-    hifive1::stdout::configure(p.UART0, pin!(pins, uart0_tx), pin!(pins, uart0_rx), 115_200.bps(), clocks);
+    hifive1::stdout::configure(
+        p.UART0,
+        pin!(pins, uart0_tx),
+        pin!(pins, uart0_rx),
+        115_200.bps(),
+        clocks,
+    );
 
-    sprintln!("Measured clock frequency of {}MHz",
-             clocks.measure_coreclk().0 / 1_000_000);
-    sprintln!("Computed clock frequency of {}MHz",
-             clocks.coreclk().0 / 1_000_000);
+    sprintln!(
+        "Measured clock frequency of {}MHz",
+        clocks.measure_coreclk().0 / 1_000_000
+    );
+    sprintln!(
+        "Computed clock frequency of {}MHz",
+        clocks.coreclk().0 / 1_000_000
+    );
 
     loop {}
 }
