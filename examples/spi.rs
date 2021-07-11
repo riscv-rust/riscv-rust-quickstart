@@ -3,11 +3,11 @@
 
 extern crate panic_halt;
 
-use riscv_rt::entry;
 use hifive1::hal::prelude::*;
 use hifive1::hal::spi::{Spi, MODE_0};
 use hifive1::hal::DeviceResources;
 use hifive1::pin;
+use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {

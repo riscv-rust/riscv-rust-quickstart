@@ -3,12 +3,11 @@
 
 extern crate panic_halt;
 
-use riscv_rt::entry;
+use hifive1::hal::i2c::{I2c, Speed};
 use hifive1::hal::prelude::*;
-use hifive1::hal::i2c::{Speed, I2c};
 use hifive1::hal::DeviceResources;
-use hifive1::{sprintln, pin};
-
+use hifive1::{pin, sprintln};
+use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {
@@ -20,7 +19,13 @@ fn main() -> ! {
     let clocks = hifive1::clock::configure(p.PRCI, p.AONCLK, 100.mhz().into());
 
     // Configure UART for stdout
-    hifive1::stdout::configure(p.UART0, pin!(pins, uart0_tx), pin!(pins, uart0_rx), 115_200.bps(), clocks);
+    hifive1::stdout::configure(
+        p.UART0,
+        pin!(pins, uart0_tx),
+        pin!(pins, uart0_rx),
+        115_200.bps(),
+        clocks,
+    );
 
     // Configure I2C
     let sda = pin!(pins, i2c0_sda).into_iof0();
@@ -35,5 +40,5 @@ fn main() -> ! {
         Err(e) => sprintln!("Error: {:?}", e),
     }
 
-    loop { }
+    loop {}
 }

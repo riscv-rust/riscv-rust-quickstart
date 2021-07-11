@@ -10,11 +10,11 @@
 
 extern crate panic_halt;
 
-use riscv_rt::entry;
-use hifive1::hal::prelude::*;
 use hifive1::hal::delay::Sleep;
+use hifive1::hal::prelude::*;
 use hifive1::hal::DeviceResources;
 use hifive1::pin;
+use riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {
@@ -37,7 +37,7 @@ fn main() -> ! {
     const PERIOD: u32 = 1000; // 1s
     loop {
         eled.toggle().unwrap();
-        
+
         // sleep for 1s
         sleep.delay_ms(PERIOD);
     }
