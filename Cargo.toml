@@ -7,7 +7,7 @@ license = "ISC"
 readme = "README.md"
 
 [dependencies]
-embedded-hal = "0.2.3"
+embedded-hal = "0.2.7"
 hifive1 = { version = "0.10.0", features = ["board-hifive1-revb"] }
 panic-halt = "0.2.0"
 riscv = "0.10.0"
