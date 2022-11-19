@@ -5,6 +5,7 @@ authors = ["{{authors}}"]
 edition = "2018"
 license = "ISC"
 readme = "README.md"
+rust-version = "1.59"
 
 [dependencies]
 embedded-hal = "0.2.7"
