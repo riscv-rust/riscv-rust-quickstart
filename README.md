@@ -8,7 +8,7 @@ This project is developed and maintained by the [RISC-V team][team].
 
 To build embedded programs using this template you'll need:
 
-- Rust 1.36 or a newer toolchain. e.g. `rustup default stable`
+- Rust 1.59 or a newer toolchain. e.g. `rustup default stable`
 
 - The `cargo generate` subcommand. [Installation
   instructions](https://github.com/ashleygwilliams/cargo-generate#installation).
@@ -88,7 +88,7 @@ If your bootloader is damaged, you will not see the green led blinking when you 
 
 
 ## License
-Copyright 2017-2019 [RISC-V team][team]
+Copyright 2017-2022 [RISC-V team][team]
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted, provided that the above copyright notice

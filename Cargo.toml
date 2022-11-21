@@ -5,13 +5,14 @@ authors = ["{{authors}}"]
 edition = "2018"
 license = "ISC"
 readme = "README.md"
+rust-version = "1.59"
 
 [dependencies]
-embedded-hal = "0.2.3"
-hifive1 = { version = "0.9.0", features = ["board-hifive1-revb"] }
+embedded-hal = "0.2.7"
+hifive1 = { version = "0.10.0", features = ["board-hifive1-revb"] }
 panic-halt = "0.2.0"
-riscv = "0.6.0"
-riscv-rt = "0.8.0"
+riscv = "0.10.0"
+riscv-rt = "0.10.0"
 
 # this lets you use `cargo fix`!
 [[bin]]
